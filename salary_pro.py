@@ -10,25 +10,34 @@ Original file is located at
 by Fathimah Aulia
 """
 
+
+# import pandas for reading csv file
 import pandas as pd
 
+# upload file from local drive to google colab
 from google.colab import files
-
 data = files.upload()
 df = pd.read_csv(next(iter(data)))
-
 df.info()
 
+# data filtering, x for years experience column, y for salary column
 x = df.iloc[:, :-1]
 y = df.iloc[:, 1]
 
+# use scikit-learn library to help with machine learning
 from sklearn.model_selection import train_test_split
+# we split the data for training and testing
+# training set : data used for learning process
+# testing set  : data used to measure the performance of (supervised) learning process
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=1/3, random_state=0)
+# test size = 1/3 means we use 1/3 of data for testing and the rest of the data for training (supervised learning)
 
 from sklearn.linear_model import LinearRegression
 regressor = LinearRegression()
 regressor.fit(x_train.values, y_train.values)
+# we use linear regression for predicting the salary value for particular years experience that is not in the data
 
+# matplotlib to plot the graph of training ang testing data
 import matplotlib.pyplot as plt
 plt.scatter(x_train, y_train, color='blue')
 plt.plot(x_train, regressor.predict(x_train), color='red')
@@ -44,7 +53,6 @@ plt.xlabel("Years Experience")
 plt.ylabel("Salary")
 plt.show()
 
-"""**MAKE NEW PREDICTION**"""
-
+# make new prediction
 salary_pred = regressor.predict([[15]])
 print("The salary for that amount of years experience is", salary_pred)
